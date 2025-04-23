@@ -46,12 +46,16 @@ export default function StocksTracker() {
     stocks.forEach((stock) => {
       const days90 = calculateDaysRemaining(stock.purchaseDate, 90);
       const days180 = calculateDaysRemaining(stock.purchaseDate, 180);
+      const days360 = calculateDaysRemaining(stock.purchaseDate, 360);
 
       if (days90 === 0) {
         alert(`90 days have passed for ${stock.stockName}!`);
       }
       if (days180 === 0) {
         alert(`180 days have passed for ${stock.stockName}!`);
+      }
+      if (days360 === 0) {
+        alert(`360 days have passed for ${stock.stockName}!`);
       }
     });
   }, [stocks]);
@@ -77,11 +81,15 @@ export default function StocksTracker() {
 
   const calculateProfitTargets = (price: string) => {
     const basePrice = Number.parseFloat(price);
-    if (isNaN(basePrice)) return { target20: "0.00", target30: "0.00" };
+    if (isNaN(basePrice)) return { target20: "0.00", target30: "0.00", target50: "0.00", target70: "0.00", target80: "0.00", target100: "0.00" };
 
     const target20 = (basePrice * 1.2).toFixed(2);
     const target30 = (basePrice * 1.4).toFixed(2);
-    return { target20, target30 };
+    const target50 = (basePrice * 1.6).toFixed(2);
+    const target70 = (basePrice * 1.8).toFixed(2);
+    const target80 = (basePrice * 1.9).toFixed(2);
+    const target100 = (basePrice * 2).toFixed(2);
+    return { target20, target30, target50, target70, target80, target100};
   };
 
   const createNewStock = () => {
@@ -159,6 +167,30 @@ export default function StocksTracker() {
                           .target30
                       }
                     </p>
+                      50% Profit Target: $
+                      {
+                        calculateProfitTargets(currentStock.purchasePrice)
+                          .target50
+                      }
+                    </p>
+                      70% Profit Target: $
+                      {
+                        calculateProfitTargets(currentStock.purchasePrice)
+                          .target70
+                      }
+                    </p>
+                      80% Profit Target: $
+                      {
+                        calculateProfitTargets(currentStock.purchasePrice)
+                          .target80
+                      }
+                    </p>
+                      100% Profit Target: $
+                      {
+                        calculateProfitTargets(currentStock.purchasePrice)
+                          .target100
+                      }
+                    </p>
                   </div>
                 )}
               </div>
@@ -184,7 +216,7 @@ export default function StocksTracker() {
           {stocks.map((stock) => {
             const days90 = calculateDaysRemaining(stock.purchaseDate, 90);
             const days180 = calculateDaysRemaining(stock.purchaseDate, 180);
-            const { target20, target30 } = calculateProfitTargets(
+            const { target20, target30, target50, target70, target80, target100 } = calculateProfitTargets(
               stock.purchasePrice
             );
 
@@ -231,6 +263,10 @@ export default function StocksTracker() {
                     </p>
                     <p>
                       <strong>180 Days Counter:</strong> {days180} days
+                      remaining
+                    </p>
+                    <p>
+                      <strong>360 Days Counter:</strong> {days360} days
                       remaining
                     </p>
                     <p className="hover:scale-105 bg-black text-white lg-rounded">

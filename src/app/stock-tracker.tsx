@@ -53,6 +53,9 @@ export default function StocksTracker() {
       if (days180 === 0) {
         alert(`180 days have passed for ${stock.stockName}!`);
       }
+      if (days360 === 0) {
+        alert(`360 days have passed for ${stock.stockName}!`);
+      }
     });
   }, [stocks]);
 
@@ -77,11 +80,15 @@ export default function StocksTracker() {
 
   const calculateProfitTargets = (price: string) => {
     const basePrice = Number.parseFloat(price);
-    if (isNaN(basePrice)) return { target20: "0.00", target30: "0.00" };
+    if (isNaN(basePrice)) return { target20: "0.00", target30: "0.00", target50: "0.00", target70: "0.00", target80: "0.00", target100: "0.00" };
 
     const target20 = (basePrice * 1.2).toFixed(2);
-    const target30 = (basePrice * 1.4).toFixed(2);
-    return { target20, target30 };
+    const target30 = (basePrice * 1.3).toFixed(2);
+    const target50 = (basePrice * 1.5).toFixed(2);
+    const target70 = (basePrice * 1.7).toFixed(2);
+    const target80 = (basePrice * 1.8).toFixed(2);
+    const target100 = (basePrice * 2).toFixed(2);
+    return { target20, target30, target50, target70, target80, target100 };
   };
 
   const createNewStock = () => {
@@ -159,6 +166,34 @@ export default function StocksTracker() {
                           .target30
                       }
                     </p>
+                    <p>
+                      50% Profit Target: $
+                      {
+                        calculateProfitTargets(currentStock.purchasePrice)
+                          .target50
+                      }
+                    </p>
+                    <p>
+                      70% Profit Target: $
+                      {
+                        calculateProfitTargets(currentStock.purchasePrice)
+                          .target70
+                      }
+                    </p>
+                    <p>
+                      80% Profit Target: $
+                      {
+                        calculateProfitTargets(currentStock.purchasePrice)
+                          .target80
+                      }
+                    </p>
+                    <p>
+                      100% Profit Target: $
+                      {
+                        calculateProfitTargets(currentStock.purchasePrice)
+                          .target100
+                      }
+                    </p>
                   </div>
                 )}
               </div>
@@ -184,7 +219,8 @@ export default function StocksTracker() {
           {stocks.map((stock) => {
             const days90 = calculateDaysRemaining(stock.purchaseDate, 90);
             const days180 = calculateDaysRemaining(stock.purchaseDate, 180);
-            const { target20, target30 } = calculateProfitTargets(
+            const days360 = calculateDaysRemaining(stock.purchaseDate, 360);
+            const { target20, target30, target50, target70, target80, target100 } = calculateProfitTargets(
               stock.purchasePrice
             );
 
@@ -230,14 +266,28 @@ export default function StocksTracker() {
                       <strong>90 Days Counter:</strong> {days90} days remaining
                     </p>
                     <p>
-                      <strong>180 Days Counter:</strong> {days180} days
-                      remaining
-                    </p>
-                    <p className="hover:scale-105 bg-black text-white lg-rounded">
-                      <strong>20% Target:</strong> <strong> ${target20}</strong>
+                      <strong>180 Days Counter:</strong> {days180} days remaining
                     </p>
                     <p>
-                      <strong>40% Target:</strong> <strong>${target30} </strong>
+                      <strong>360 Days Counter:</strong> {days360} days remaining
+                    </p>
+                    <p>
+                      <strong>20% Target:</strong> ${target20}
+                    </p>
+                    <p>
+                      <strong>30% Target:</strong> ${target30}
+                    </p>
+                    <p>
+                      <strong>50% Target:</strong> ${target50}
+                    </p>
+                    <p>
+                      <strong>70% Target:</strong> ${target70}
+                    </p>
+                    <p>
+                      <strong>80% Target:</strong> ${target80}
+                    </p>
+                    <p>
+                      <strong>100% Target:</strong> ${target100}
                     </p>
                   </div>
                 </CardContent>
